@@ -1,9 +1,9 @@
 package com.auth.identity.repo;
 
 import com.auth.identity.domain.RegistrationRequest;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface RegistrationDao extends JpaRepository<RegistrationRequest, Long>
+public interface RegistrationDao extends MongoRepository<RegistrationRequest, String>
 {
 
     public RegistrationRequest findByEmail(String email);

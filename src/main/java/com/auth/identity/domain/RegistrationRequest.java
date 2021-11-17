@@ -1,36 +1,25 @@
 package com.auth.identity.domain;
 
 import lombok.Data;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
 @Data
-@Entity(name = "registered_user")
+@Document
 public class RegistrationRequest implements Serializable
 {
 
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.AUTO
-    )
-    private Long id;
-
-    @Column(
-            name = "email",
-            nullable = false,
-            unique = true
-    )
+    private String id;
     private String email;
     private String firstName;
     private String lastName;
     private String username;
-    @Column(name = "phone", unique = true, nullable = false)
     private String phone;
-    @Column(name = "created_at")
     private Date createdAt;
-    @Column(name = "updated_at")
     private Date updatedAt;
 
     public String getEmail() {
@@ -65,11 +54,11 @@ public class RegistrationRequest implements Serializable
         this.username = username;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

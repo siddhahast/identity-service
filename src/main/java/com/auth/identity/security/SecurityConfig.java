@@ -1,5 +1,6 @@
 package com.auth.identity.security;
 
+import com.auth.identity.constants.AppConstants;
 import com.auth.identity.domain.ApiRoleAuth;
 import com.auth.identity.filter.CustomAuthenticationFilter;
 import com.auth.identity.filter.CustomAuthorizationFilter;
@@ -55,10 +56,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
     protected void configure(HttpSecurity http) throws Exception
     {
         CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManager(), tokenSecret);
-        customAuthenticationFilter.setFilterProcessesUrl("/api/login");
+        customAuthenticationFilter.setFilterProcessesUrl(AppConstants.API_LOGIN_URL);
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests().antMatchers("/login", "/api/token/refresh").permitAll();
+        http.authorizeRequests().antMatchers(AppConstants.API_LOGIN_URL, AppConstants.API_TOKEN_REFRESH).permitAll();
         configHttpApiRoleMatchers(http);
         http.authorizeRequests().anyRequest().permitAll();
         http.addFilter(customAuthenticationFilter);

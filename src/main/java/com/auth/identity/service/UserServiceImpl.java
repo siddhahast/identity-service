@@ -68,7 +68,8 @@ public class UserServiceImpl implements UserService, UserDetailsService
     }
 
     @Override
-    public AppUser getUser(String username) {
+    public AppUser getUser(String username)
+    {
         return userRepo.findByUsername(username);
     }
 
@@ -91,7 +92,6 @@ public class UserServiceImpl implements UserService, UserDetailsService
         appUser.setPassword(encodedPassword);
         Role role = new Role();
         role.setName("ROLE_NAME");
-        role.setId(1L);
         appUser.setRoles(Arrays.asList(role));
         AppUser createdUser = userRepo.save(appUser);
         String signupToken = tokenService.signupToken(appUser);

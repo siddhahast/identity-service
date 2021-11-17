@@ -5,13 +5,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+@Document
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,20 +21,32 @@ import java.util.List;
 public class AppUser implements Serializable
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private String id;
+    private Long userId;
     private String firstName;
     private String lastName;
+    @Indexed(unique = true)
     private String email;
+    @Indexed(unique = true)
     private String username;
     @JsonIgnore
     private String password;
     private Boolean locked;
     private Boolean enabled;
     private String registrationToken;
-
-    @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles = new ArrayList<>();
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -67,11 +81,11 @@ public class AppUser implements Serializable
     }
 
     public Long getId() {
-        return id;
+        return userId;
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.userId = id;
     }
 
     public String getUsername() {
@@ -125,7 +139,7 @@ public class AppUser implements Serializable
 
     public AppUser(Long id, String firstName, String lastName, String username, String email, String password, List<Role> roles)
     {
-        this.id = id;
+        this.userId = id;
         this.password = password;
         this.firstName=firstName;
         this.lastName = lastName;
