@@ -3,9 +3,9 @@ package com.auth.identity.api;
 import com.auth.identity.constants.AppConstants;
 import com.auth.identity.domain.AppUser;
 import com.auth.identity.domain.Role;
+import com.auth.identity.domain.RoleToUser;
 import com.auth.identity.service.TokenService;
 import com.auth.identity.service.UserService;
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +18,8 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
-public class UserController
+@RequestMapping
+public class UserController extends BaseIdentityController
 {
 
     @Autowired
@@ -34,28 +34,34 @@ public class UserController
         return ResponseEntity.ok().body(userService.signupUser(appUser));
     }
 
-    @GetMapping("/users")
+    @PostMapping(AppConstants.API_LOGIN_URL)
+    public ResponseEntity<AppUser> login(@RequestBody AppUser appUser)
+    {
+        return ResponseEntity.ok().body(userService.signupUser(appUser));
+    }
+
+    @GetMapping(AppConstants.API_USER_ALL)
     public ResponseEntity<List<AppUser>> getUsers()
     {
         return ResponseEntity.ok().body(userService.getUsers());
     }
 
 
-    @PostMapping("/user/save")
+    @PostMapping(AppConstants.API_USER_SAVE)
     public ResponseEntity<AppUser> save(@RequestBody AppUser appUser)
     {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toUriString());
         return ResponseEntity.created(uri).body(userService.saveUser(appUser));
     }
 
-    @PostMapping("/role/save")
+    @PostMapping(AppConstants.API_ROLE_SAVE)
     public ResponseEntity<Role> saveRole(@RequestBody Role role)
     {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/role/save").toUriString());
         return ResponseEntity.created(uri).body(userService.saveRole(role));
     }
 
-    @PostMapping("/user/role")
+    @PostMapping(AppConstants.API_USER_TO_ROLE_SAVE)
     public ResponseEntity<?> saveRoleToUser(@RequestBody RoleToUser roleToUser)
     {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/role").toUriString());
@@ -63,33 +69,10 @@ public class UserController
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/token/refresh")
+    @GetMapping(AppConstants.API_TOKEN_REFRESH)
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
         tokenRefreshService.refreshToken(request, response);
     }
 
-}
-
-@Data
-class RoleToUser
-{
-    private String user;
-    private String role;
-
-    public String getUser() {
-        return user;
-    }
-
-    public void setUser(String user) {
-        this.user = user;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
 }
