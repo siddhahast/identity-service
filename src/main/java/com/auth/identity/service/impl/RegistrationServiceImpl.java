@@ -8,6 +8,7 @@ import com.auth.identity.service.RegistrationService;
 import com.auth.identity.service.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -17,26 +18,37 @@ public class RegistrationServiceImpl implements RegistrationService
     @Autowired
     private RegistrationDao registrationDao;
 
+    @Autowired
+    private KafkaTemplate appUserKafkaTemplate;
+
     @Value("${authentication.secret}")
     private String tokenSecret;
 
     @Override
     public RegistrationRequest save(RegistrationRequest registrationRequest)
     {
+        RegistrationRequest registration = registrationDao.save(registrationRequest);
+        return registration;
+    }
+
+    @Override
+    public RegistrationRequest register(RegistrationRequest registrationRequest)
+    {
         RegistrationRequest registration = registrationDao.findByEmail(registrationRequest.getEmail());
         if(registration!=null)
         {
             throw new IdentityException("", null);
         }
-        registration = registrationDao.save(registrationRequest);
         JwtTokenRequest jwtTokenRequest = new JwtTokenRequest.JwtTokenRequestBuilder()
-                .username(registration.getUsername())
+                .username(registrationRequest.getUsername())
                 .secretToken(tokenSecret)
                 .roles(null)
                 .build();
 
         String registrationToken = TokenUtil.prepareJWToken(jwtTokenRequest);
+        registrationRequest.setRegistrationToken(registrationToken);
         // TODO : Send this token to the email
+        appUserKafkaTemplate.send("user-registration-request", registrationRequest);
         return registration;
     }
 
@@ -61,5 +73,11 @@ public class RegistrationServiceImpl implements RegistrationService
     public void delete(RegistrationRequest registrationRequest)
     {
 
+    }
+
+    @Override
+    public RegistrationRequest find(String userName)
+    {
+        return registrationDao.findByUsername(userName);
     }
 }

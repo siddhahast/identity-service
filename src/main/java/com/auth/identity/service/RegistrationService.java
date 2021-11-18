@@ -7,8 +7,12 @@ public interface RegistrationService
 
     public RegistrationRequest save(RegistrationRequest registrationRequest);
 
+    public RegistrationRequest register(RegistrationRequest registrationRequest);
+
     public RegistrationRequest retriggerRegistration(RegistrationRequest registrationRequest);
 
     public void delete(RegistrationRequest registrationRequest);
+
+    public RegistrationRequest find(String userName);
 
 }
