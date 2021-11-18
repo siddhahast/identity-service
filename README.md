@@ -22,3 +22,4 @@ Future Scopes :
   1. Email Trigger to verify user registration via a cron job that monitors mongodb inserts
   2. API Exposure for Super Admins to change role of any user.
   3. Add Permissions to roles and drive accesss control to entity objects based on permissions.
+  4. Unit Tests
