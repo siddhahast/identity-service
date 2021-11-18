@@ -16,3 +16,9 @@ Flow of the User Registration :
   Attached is the High level flow with components :
  
  ![UserRegistrationAndLoginFlow](https://user-images.githubusercontent.com/13188958/142438867-c3b23ef5-4f97-4a28-9bea-acc54dc08446.png)
+
+
+Future Scopes : 
+  1. Email Trigger to verify user registration via a cron job that monitors mongodb inserts
+  2. API Exposure for Super Admins to change role of any user.
+  3. Add Permissions to roles and drive accesss control to entity objects based on permissions.
