@@ -25,7 +25,8 @@ public class UserRepoImpl implements UserRepo
     }
 
     @Override
-    public AppUser findByEmail(String email) {
+    public AppUser findByEmail(String email)
+    {
         Query query = new Query(Criteria.where("email").is(email));
         return (AppUser) mongoTemplate.find(query, AppUser.class);
     }

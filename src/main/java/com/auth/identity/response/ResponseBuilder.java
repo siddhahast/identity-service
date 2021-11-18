@@ -25,5 +25,4 @@ public class ResponseBuilder<O>
         return response;
     }
 
-
 }
