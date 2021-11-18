@@ -25,8 +25,6 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 {
     private AuthenticationManager authenticationManager;
 
-    private TokenUtil tokenUtils;
-
     private String tokenSecret;
 
     public CustomAuthenticationFilter(AuthenticationManager authenticationManager, String tokenSecret)
