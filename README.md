@@ -14,4 +14,5 @@ Flow of the User Registration :
   4. Consume the event by a consumer to persist in the mongoDb.
   
   Attached is the High level flow with components :
-  https://user-images.githubusercontent.com/13188958/142438465-0ada8917-823c-4e23-ba34-3f8d9b9ef894.png
+ 
+ ![UserRegistrationAndLoginFlow](https://user-images.githubusercontent.com/13188958/142438867-c3b23ef5-4f97-4a28-9bea-acc54dc08446.png)
