@@ -1,7 +1,8 @@
-package com.auth.identity.service;
+package com.auth.identity.service.impl;
 
 import com.auth.identity.domain.ApiRoleAuth;
 import com.auth.identity.repo.ApiRoleAuthRepo;
+import com.auth.identity.service.ApiRoleAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

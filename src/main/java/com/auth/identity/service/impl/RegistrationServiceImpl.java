@@ -3,6 +3,7 @@ package com.auth.identity.service.impl;
 import com.auth.identity.domain.JwtTokenRequest;
 import com.auth.identity.domain.RegistrationRequest;
 import com.auth.identity.excpetion.IdentityException;
+import com.auth.identity.excpetion.UserAlreadyExistsException;
 import com.auth.identity.repo.RegistrationDao;
 import com.auth.identity.service.RegistrationService;
 import com.auth.identity.service.TokenUtil;
@@ -10,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
+
+import static com.auth.identity.excpetion.IdentityError.UNKNOWN_REGISTRATION_RETRIGGER_ATTEMPT;
+import static com.auth.identity.excpetion.IdentityError.USER_ALREADY_EXIST;
 
 @Component
 public class RegistrationServiceImpl implements RegistrationService
@@ -37,7 +41,7 @@ public class RegistrationServiceImpl implements RegistrationService
         RegistrationRequest registration = registrationDao.findByEmail(registrationRequest.getEmail());
         if(registration!=null)
         {
-            throw new IdentityException("", null);
+            throw new UserAlreadyExistsException(USER_ALREADY_EXIST.name(), "User with email : " + registrationRequest.getEmail() + " already exists");
         }
         JwtTokenRequest jwtTokenRequest = new JwtTokenRequest.JwtTokenRequestBuilder()
                 .username(registrationRequest.getUsername())
@@ -58,7 +62,7 @@ public class RegistrationServiceImpl implements RegistrationService
         RegistrationRequest registration = registrationDao.findByUsername(registrationRequest.getUsername());
         if(registration == null)
         {
-            // TODO : throw an exception
+            throw new IdentityException(UNKNOWN_REGISTRATION_RETRIGGER_ATTEMPT.name(), "User is not registered.");
         }
         JwtTokenRequest jwtTokenRequest = new JwtTokenRequest.JwtTokenRequestBuilder()
                 .username(registration.getUsername())
@@ -66,6 +70,7 @@ public class RegistrationServiceImpl implements RegistrationService
                 .roles(null)
                 .build();
         String registrationToken = TokenUtil.prepareJWToken(jwtTokenRequest);
+        // TODO : Retrigger email with registration token to verify
         return registration;
     }
 

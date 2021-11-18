@@ -1,10 +1,12 @@
-package com.auth.identity.service;
+package com.auth.identity.service.impl;
 
 import com.auth.identity.domain.AppUser;
 import com.auth.identity.domain.Role;
 import com.auth.identity.excpetion.UserAlreadyExistsException;
 import com.auth.identity.repo.RoleRepo;
 import com.auth.identity.repo.UserRepo;
+import com.auth.identity.service.TokenService;
+import com.auth.identity.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
