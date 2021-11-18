@@ -29,7 +29,7 @@ public class RegistrationController extends BaseIdentityController
     @PostMapping(path = AppConstants.API_REGISTER)
     public Response<RegistrationRequest> register(@RequestBody RegistrationRequest registrationRequest)
     {
-        RegistrationRequest newUser = registrationService.save(registrationRequest);
+        RegistrationRequest newUser = registrationService.register(registrationRequest);
         return responseBuilder.buildSuccess(newUser);
     }
 

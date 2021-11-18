@@ -2,6 +2,7 @@ package com.auth.identity.domain;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
@@ -14,13 +15,17 @@ public class RegistrationRequest implements Serializable
 
     @Id
     private String id;
+    @Indexed(unique = true)
     private String email;
     private String firstName;
     private String lastName;
+    @Indexed(unique = true)
     private String username;
+    @Indexed(unique = true)
     private String phone;
     private Date createdAt;
     private Date updatedAt;
+    private String registrationToken;
 
     public String getEmail() {
         return email;
@@ -84,5 +89,13 @@ public class RegistrationRequest implements Serializable
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getRegistrationToken() {
+        return registrationToken;
+    }
+
+    public void setRegistrationToken(String registrationToken) {
+        this.registrationToken = registrationToken;
     }
 }
